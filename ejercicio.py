@@ -142,8 +142,24 @@ class CuentaJoven(Cuenta):
         """ Setter para el atributo bonificación """
         self.__bonificacion = bonificacion
 
+    def es_titular_valido(self):
+        """El titular debe ser mayor de edad y menor de 26 años"""
+        if self.titular.es_mayor_de_edad() and self.titular.edad <= 26:
+            return True
+        else:
+            return False
 
+    def retirar(self, cantidad):
+        """ Permite el egreso de una cantidad en pesos de se resta del saldo
+        Solo puede retirar si el titular es válido"""
+        if self.es_titular_valido():
+            super().retirar(cantidad)
 
+    def mostrar(self):
+        """ Muestra los datos completos de la persona"""
+        print("-- Cuenta Joven --")
+        print(super().mostrar())
+        print(f"- Bonificación  : {self.__bonificacion}")
 
 # ---------------------------------------------------------------------------------
 # ----***** Pruebas
@@ -181,8 +197,8 @@ if p2.es_mayor_de_edad():
 else:
     print("Es MENOR de edad")
 
-# Pruebas de la clase cuenta usando Persona1
-print("\n --- Pruebas con la clase cuenta ---")
+# Pruebas de la clase Cuenta usando Persona1
+print("\n --- Pruebas con la clase Cuenta ---")
 print(" * Instancia con una persona sin nombre")
 try:
     psn = Persona()
@@ -215,3 +231,20 @@ print(c1.mostrar())
 print(" * Ingreso -200 de la cuenta")
 c1.ingresar(-200)
 print(c1.mostrar())
+
+# Pruebas de la clase CuentaJoven usando Persona2
+
+print("\n --- Pruebas con la clase CuentaJoven ---")
+print(" * Instancia con una persona de 20 años")
+cj1 = CuentaJoven(p2, 1000, 30)
+print(f" * Es titular válido: {cj1.es_titular_valido()}")
+cj1.retirar(300)
+print(" * Retiro 300 y muestro los datos de la cuenta")
+print(cj1.mostrar())
+print("\n\n --- Pruebas con la clase CuentaJoven ---")
+print(" * Instancia con una persona de más de 26 años")
+cj2 = CuentaJoven(p1, 1000, 30)
+print(f" * Es titular válido: {cj2.es_titular_valido()}")
+cj2.retirar(300)
+print(" * Retiro 300 y muestro los datos de la cuenta")
+print(cj2.mostrar())
