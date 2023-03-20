@@ -70,6 +70,47 @@ class Persona:
 # rojos.
 # """
 
+class Cuenta:
+    """ Clase cuenta - Atributos titular del tipo persona y cantidad de tipo float"""
+    def __init__(self, titular = Persona(), cantidad = 0.0) :
+        if not isinstance(titular, Persona):
+            raise ValueError("El titular debe ser un objeto persona")
+        if titular.nombre == '':
+            raise ValueError("El titular debe tener nombre")
+        self.__titular = titular
+        self.__cantidad = cantidad
+
+    @property
+    def titular(self):
+        """ Getter para el atributo titular"""
+        return self.__titular
+
+    @titular.setter
+    def titular(self, titular):
+        """ Setter para el atributo titular"""
+        self.__titular = titular
+
+    @property
+    def cantidad(self):
+        """ Getter para el atributo cantidad (Este atributo no tiene setters) """
+        return self.__cantidad
+
+    def ingresar(self, cantidad):
+        """ Permite el ingreso de una cantidad en pesos que se agrega al saldo
+        de la cuenta. Si se ingresan cantidades negativas no tienen efecto"""
+        if cantidad > 0:
+            self.__cantidad += cantidad
+
+    def retirar(self, cantidad):
+        """ Permite el egreso de una cantidad en pesos de se resta del saldo"""
+        self.__cantidad -= cantidad
+
+    def mostrar(self):
+        """ Muestra los datos completos de la persona"""
+        print("-- Datos de la cuenta --")
+        print(self.__titular.mostrar())
+        print(f"- Saldo  : {self.__cantidad}")
+
 # """ 8. Vamos a definir ahora una “Cuenta Joven”, para ello vamos a crear una nueva clase
 # CuantaJoven que deriva de la clase creada en el punto 7. Cuando se crea esta nueva clase,
 # además del titular y la cantidad se debe guardar una bonificación que estará expresada en
@@ -83,6 +124,27 @@ class Persona:
 # - El método mostrar() debe devolver el mensaje de “Cuenta Joven” y la bonificación de la
 # cuenta.
 # """
+
+class CuentaJoven(Cuenta):
+    """ Clase Cuenta Joven. Hereda de la clase Cuenta. Se agrega el atributo
+    Bonificación """
+    def __init__(self, titular=Persona(), cantidad=0.0, bonificacion=0.0):
+        super().__init__(titular, cantidad)
+        self.__bonificacion = bonificacion
+
+    @property
+    def bonificacion(self):
+        """ Getter del atributo bonificación"""
+        return self.__bonificacion
+
+    @bonificacion.setter
+    def bonificacion(self, bonificacion):
+        """ Setter para el atributo bonificación """
+        self.__bonificacion = bonificacion
+
+
+
+
 # ---------------------------------------------------------------------------------
 # ----***** Pruebas
 # Instancio una persona con los atributos vacios
@@ -102,7 +164,54 @@ if p1.es_mayor_de_edad():
     print("Es mayor de edad")
 else:
     print("Es MENOR de edad")
+# ---------------------------------------------------------------------------------
+# Instancio una persona con los atributos inicializados desde el constructor
+# Muestro con los getters y con mostrar. Idem mayor de edad
 
+p2 = Persona("Mengano", 20, "40202303")
+print("--- Persona 2 ---")
+print(" * Muestro con los getters")
+print(f"Nombre: {p2.nombre} \nEdad: {p2.edad} \nDNI: {p2.dni}")
+# Muestro con el método mostrar
+print(" * Muestro con mostrar()")
+p2.mostrar()
+# Uso es_mayor_de_edad
+if p2.es_mayor_de_edad():
+    print("Es mayor de edad")
+else:
+    print("Es MENOR de edad")
 
-# p = Persona("Juan", 20, "20202303")
-# print(p.edad)
+# Pruebas de la clase cuenta usando Persona1
+print("\n --- Pruebas con la clase cuenta ---")
+print(" * Instancia con una persona sin nombre")
+try:
+    psn = Persona()
+    c1 = Cuenta(psn)
+except ValueError as error:
+    print(error)
+
+print("\n * Instancia sin objeto persona")
+try:
+    c1 = Cuenta("Zutano")
+except ValueError as error:
+    print(error)
+
+print("\n * Instancia correcta")
+try:
+    c1 = Cuenta(p1, 1000)
+except ValueError as error:
+    print(error)
+
+print(c1.mostrar())
+print(" * Retiro 500 de la cuenta")
+c1.retirar(500)
+print(c1.mostrar())
+print(" * Retiro 0.5 de la cuenta")
+c1.retirar(0.5)
+print(c1.mostrar())
+print(" * Ingreso 750 de la cuenta")
+c1.ingresar(750)
+print(c1.mostrar())
+print(" * Ingreso -200 de la cuenta")
+c1.ingresar(-200)
+print(c1.mostrar())
