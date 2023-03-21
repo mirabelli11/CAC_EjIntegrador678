@@ -14,8 +14,12 @@ class Persona:
         self.__nombre = nombre
         self.__edad = edad
         self.__dni = dni
-    # Los setters y getters para cada uno de los atributos
+        # Acá estoy accediedo al atributo interno. Si accedo self.nombre, paso por las validaciones
+        # que tenga el .setter.
+        # La mejor práctica es acceder a al atributo interno (__) solo desde getters y setters 
+        # y desde cualquier otro lugar acceder a la property y al .setter
 
+    # Los setters y getters para cada uno de los atributos
     @property
     def nombre(self):
         """ Getter para el atributo nombre"""
@@ -75,7 +79,7 @@ class Cuenta:
     def __init__(self, titular = Persona(), cantidad = 0.0) :
         if not isinstance(titular, Persona):
             ### isinstance es la forma correcta de determinar el tipo de un dato. 
-            
+
             raise ValueError("El titular debe ser un objeto persona")
         if titular.nombre == '':
             raise ValueError("El titular debe tener nombre")
