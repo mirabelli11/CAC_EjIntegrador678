@@ -74,6 +74,8 @@ class Cuenta:
     """ Clase cuenta - Atributos titular del tipo persona y cantidad de tipo float"""
     def __init__(self, titular = Persona(), cantidad = 0.0) :
         if not isinstance(titular, Persona):
+            ### isinstance es la forma correcta de determinar el tipo de un dato. 
+            
             raise ValueError("El titular debe ser un objeto persona")
         if titular.nombre == '':
             raise ValueError("El titular debe tener nombre")
